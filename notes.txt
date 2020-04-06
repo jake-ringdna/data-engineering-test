@@ -1,0 +1,34 @@
+anomalies observed:
+
+- one or more spaces before and/or after values in all columns except the id
+
+- one or more carriage returns/line feeds in the middle of a row
+
+- one or more extra tabs in the middle of a row
+
+- three consecutive name fields; when this occurs, assume 2nd and 3rd are the
+  last name and join with a space or remove one if identical
+
+observations/judgements:
+
+- all of the first column values (id) for the good rows can be cast to int
+  without a problem, so no need to trim spaces on those
+
+- an email address has to contain a “@“ character, so can validate the 5th
+  column contains one; not worth the complexity or performance to do a full
+  email regex
+
+- account numbers all start with [1-9], so can validate account number vs name
+  field by looking at that digit; optionally could have cleansed ‘-‘ and ‘/‘
+  from account numbers and tried converting to an int
+
+- further normalization of names could be attempted by changing case, however,
+  names such as “McGrath” would be hard to deal with elegantly, and all upper
+  case or all lower case aren’t particularly appealing
+
+- some otherwise valid rows have missing first name, last name, or both;
+  they are assumed to be allowed as the output is still a valid TSV and
+  sometimes that information might be missing for a user
+
+- email addresses could easily be normalized by changing to all lower case if
+  needed or desired
