@@ -22,16 +22,17 @@ def format_tsv(input_filepath, output_filepath):
         line = row.split('\t')
         if len(line) == 5:
             broken_line = []
-            output.write("\t".join(line))
+            line = [elem.replace("\n", "").replace("\t", '').strip() for elem in line]
+            output.write("\t".join(line) + "\n")
         else:
             broken_line.extend(line)
             if '' in broken_line: broken_line.remove('')
             if '\n' in broken_line: broken_line.remove('\n')
             if '\t' in broken_line: broken_line.remove('\t')
             if len(broken_line) > 3 and not parse_int(broken_line[3]): broken_line.pop(3)
-            broken_line = [elem.replace('\n', '').strip() for elem in broken_line]
+            broken_line = [elem.replace('\t','').strip() for elem in broken_line]
             if len(broken_line) == 5:
-                output.write("\t".join(broken_line))
+                output.write("\t".join(broken_line) + '\n')
 
 if __name__ == "__main__":
     format_tsv('data/data.tsv', 'data/clean_data.tsv')
